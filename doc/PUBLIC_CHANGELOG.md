@@ -1,4 +1,4 @@
-# Mortal Kombat II Rev 3.3 Beta - Public Changelog
+# Mortal Kombat II v4.0 - Public Changelog
 
 This is a player-friendly changelog for the current build, summarized from the
 readonly source baseline, repo history, and the latest verified build.
@@ -8,8 +8,8 @@ restoration and stability work, but the fun is finding those in-game.
 
 ## Quick Highlights
 
-- Netplay-focused build: faster input feel, deterministic random behavior, free
-  play, quick rematches, and no operator-menu surprises mid-session.
+- Netplay-focused build: faster input feel, deterministic random behavior,
+  free play online (coin-op on a cabinet), and quick rematches.
 - New and restored non-fatality specials for several characters.
 - Expanded hidden palette support with multiple Start-button palette chords.
 - VS-screen stage select added, with stage art/palette fixes.

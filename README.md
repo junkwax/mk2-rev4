@@ -1,4 +1,4 @@
-# Mortal Kombat II — Rev 4.0 (T-unit)
+# Mortal Kombat II — v4.0 (T-unit)
 
 A rebuild of Midway's 1993 arcade *Mortal Kombat II* for the stock Williams/Midway
 **T-unit** board, with new moves, new fatalities, restored cut content, new and
@@ -10,7 +10,8 @@ submitted to **FBNeo / Fightcade** as the set `mk2rev4` (clone of `mk2`).
 > own hand-written modules, the FBNeo driver entry, and **binary patches**.
 > It contains **no Midway/Warner Bros. source code, art, audio or ROM data**,
 > and none of the TI TMS34010 toolchain. To play it you need your own copy of
-> the retail `mk2` ROM set; the patches turn it into `mk2rev4`.
+> the retail `mk2` ROM set; the patches turn it into `mk2rev4`: program, video **and sound** ROMs (the
+build's custom audio is in the sound patch).
 
 Snapshot: source commit `b2f2f233`, version string `REV 4.0 (EAA637) FC`.
 
