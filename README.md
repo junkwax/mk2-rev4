@@ -42,6 +42,8 @@ the set itself are in [`fbneo/README.txt`](fbneo/README.txt).
 
 ## What changed
 
+**Players: the full move list and strategy guide is [`MOVES.md`](MOVES.md).**
+
 Highlights (full detail in [`doc/`](doc/) — start with
 [`doc/ENGINEERING_NOTES.md`](doc/ENGINEERING_NOTES.md), the project's running
 build and behaviour notes, and [`doc/CHANGELOG.md`](doc/CHANGELOG.md)):
