@@ -41,8 +41,9 @@ Hold times are given in real seconds.
   **tap START** (nothing else pressed): Scorpion → **Ermac**, Kitana → **Jade**,
   Sub-Zero → **Rain**. Tap again to switch back. In the FBNeo / Fightcade set all
   three are available from power-on. On an arcade board they are earned first:
-  in a one-player game, beat **Shao Kahn** to unlock Ermac and beat **Smoke** to
-  unlock Rain. Unlocks are saved, and operators can restrict them in the test
+  in a one-player game, beat **Jade** in her secret fight to unlock Jade, beat
+  **Shao Kahn** to unlock Ermac and beat **Smoke** to unlock Rain (see Secret
+  opponents). Unlocks are saved, and operators can restrict them in the test
   menu.
 - **Back-block** (on by default): holding Back from your opponent blocks, as in
   later MK games. Operators can set it to button-only with the DIP switch MAME
@@ -372,11 +373,13 @@ blue (default), red (Start + HP) or purple (Start + LP / HK / LK).
 
 | Opponent | How |
 |---|---|
+| **Jade** | On the match **right before the "?"** on the Battle Plan, win a round using **only Low Kick**: no HP, LP, HK or Block at all. You go straight to a fight with Jade |
 | **Smoke** | On **The Portal**, when Dan Forden pops up and says "Toasty!" after an uppercut, quickly press **D + START** |
 | **Noob Saibot** | On the **Battle Plan** screen between matches, **hold START** for about 3 seconds without letting go. Your next opponent is Noob Saibot |
 | **Khameleon** | On the **Battle Plan** screen, **tap START five times**. Your next opponent is Khameleon |
 
-Beating Smoke unlocks Rain on an arcade board (see the top of this guide).
+On an arcade board, beating Jade unlocks Jade and beating Smoke unlocks Rain
+(see the top of this guide).
 
 ---
 

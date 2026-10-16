@@ -42,7 +42,7 @@ the set itself are in [`fbneo/README.txt`](fbneo/README.txt).
 
 ## What changed
 
-**Players: the full move list and strategy guide is [`MOVES.md`](MOVES.md).**
+**Players: the full move list and strategy guide is at [junkwax.github.io/mk2-rev4](https://junkwax.github.io/mk2-rev4/)** (also [`MOVES.md`](MOVES.md)).
 
 Highlights (full detail in [`doc/`](doc/) — start with
 [`doc/ENGINEERING_NOTES.md`](doc/ENGINEERING_NOTES.md), the project's running
@@ -111,3 +111,7 @@ Many tools and rigs contain absolute Windows paths from the original machine
 unofficial, non-commercial fan project with no affiliation with Warner Bros.,
 NetherRealm Studios or Midway. No copyrighted game data is included; you must
 own the original ROMs to use the patches.
+
+This project's own tools, documentation and code are released under the
+[MIT License](LICENSE). The license does not cover, and grants no rights to,
+Mortal Kombat or any Midway / Warner Bros. material.

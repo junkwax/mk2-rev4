@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MK II v4.0 Move List</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+html,body{margin:0}
+
+/* Layout: one reading column; a sticky fighter rail; each fighter a card with two tables (moves, finishers). Inputs drawn as arcade stick + button caps. */
+:root{
+  --bg:#f3efe8; --panel:#fffdf9; --ink:#1f1a17; --muted:#6d625a; --rule:#ddd3c7;
+  --blood:#a3221b; --bronze:#8a5a1f; --new:#a3221b; --newbg:#f8e2df;
+  --hp:#c0392b; --lp:#d98a1c; --hk:#2c6fb3; --lk:#2f8a57; --bl:#5b5b66; --stick:#2a2522; --stickfg:#f3efe8;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#16120f; --panel:#201a16; --ink:#eee6dc; --muted:#a89a8c; --rule:#3a302a;
+  --blood:#e0574c; --bronze:#d29a52; --new:#ff8a7f; --newbg:#3a1d1a;
+  --hp:#e0574c; --lp:#e6a33f; --hk:#5b9de0; --lk:#4fb57c; --bl:#8b8b96; --stick:#eee6dc; --stickfg:#16120f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#16120f; --panel:#201a16; --ink:#eee6dc; --muted:#a89a8c; --rule:#3a302a;
+  --blood:#e0574c; --bronze:#d29a52; --new:#ff8a7f; --newbg:#3a1d1a;
+  --hp:#e0574c; --lp:#e6a33f; --hk:#5b9de0; --lk:#4fb57c; --bl:#8b8b96; --stick:#eee6dc; --stickfg:#16120f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:.01em;text-transform:uppercase}
+h1 span{color:var(--blood)}
+h2{font-size:1.9rem;font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+h3{font-size:1.05rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+p{margin:0;max-width:68ch}
+.lede{color:var(--muted);font-size:1.05rem}
+.eyebrow{font:700 .78rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bronze)}
+header{display:flex;flex-direction:column;gap:10px;border-bottom:3px solid var(--blood);padding-bottom:18px}
+section{display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.box{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box b{font-family:var(--display);font-size:1.15rem;text-transform:uppercase;letter-spacing:.03em}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:.95rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+ul.rules{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:8px;max-width:72ch}
+/* rail */
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips a{font:700 .9rem var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);text-decoration:none;padding:5px 10px;border:1px solid var(--rule);border-radius:999px;background:var(--panel)}
+.chips a:hover,.chips a:focus-visible{border-color:var(--blood);color:var(--blood);outline:none}
+.chips a.hid{border-style:dashed}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tools input[type=search]{flex:1 1 220px;min-width:0;font:inherit;padding:7px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--panel);color:var(--ink)}
+.tools label{display:inline-flex;gap:6px;align-items:center;font-weight:600;font-size:.95rem;cursor:pointer}
+input:focus-visible{outline:2px solid var(--blood);outline-offset:1px}
+/* fighter */
+.fighter{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:130px}
+.fhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.fhead .unlock{font-size:.92rem;color:var(--muted)}
+.fnote{color:var(--muted);font-size:.95rem}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.97rem}
+th{font:700 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:2px solid var(--rule)}
+td{padding:8px;border-bottom:1px solid var(--rule);vertical-align:top}
+td.mv{font-weight:600;width:30%}
+td.rg{white-space:nowrap;color:var(--muted);font-size:.9rem;width:1%}
+td .note{display:block;color:var(--muted);font-size:.9rem;margin-top:3px}
+tr.isnew td.mv::after{content:"NEW";margin-left:8px;font:700 .68rem var(--mono);letter-spacing:.1em;color:var(--new);background:var(--newbg);padding:2px 6px;border-radius:3px;vertical-align:2px}
+.in{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;line-height:1.9}
+.k{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;font:700 .78rem var(--mono);color:#fff}
+.k.d{background:var(--stick);color:var(--stickfg);border-radius:5px;font-size:.95rem;min-width:24px;height:24px}
+.k.HP{background:var(--hp)}.k.LP{background:var(--lp)}.k.HK{background:var(--hk)}.k.LK{background:var(--lk)}.k.BL{background:var(--bl)}.k.ST{background:var(--bronze);border-radius:5px}
+.sep{color:var(--muted);font-weight:700}
+.txt{font-size:.94rem}
+.empty{color:var(--muted);font-style:italic}
+footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media (max-width:560px){td.mv{width:auto}.fighter{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Mortal Kombat II · v4.0 · FBNeo / Fightcade set mk2rev4</div>
+  <h1>Move List <span>&amp;</span> Strategy</h1>
+  <p class="lede">Every special, fatality, babality and stage fatality in v4.0, checked against the build itself. Moves marked <b style="color:var(--new)">NEW</b> are not in arcade MK2 (L3.1).</p>
+</header>
+
+<section aria-labelledby="read">
+  <h2 id="read">How to read it</h2>
+  <div class="grid2">
+    <div class="box"><b>Inputs</b>
+      <div class="legend">
+        <span><i class="k d">→</i> toward him</span><span><i class="k d">←</i> away</span><span><i class="k d">↑</i><i class="k d">↓</i> up / down</span>
+      </div>
+      <div class="legend">
+        <span><i class="k HP">HP</i> high punch</span><span><i class="k LP">LP</i> low punch</span><span><i class="k HK">HK</i> high kick</span><span><i class="k LK">LK</i> low kick</span><span><i class="k BL">BL</i> block</span>
+      </div>
+      <p class="txt">Arrows assume you face right. Press directions in order, then the button. "Hold … release" means keep the button down, do the rest, then let go.</p>
+    </div>
+    <div class="box"><b>Fatality range</b>
+      <p class="txt"><b style="font-size:1rem">Close</b> touching, a step at most · <b style="font-size:1rem">Sweep</b> just outside close · <b style="font-size:1rem">Mid</b> a third to half a screen · <b style="font-size:1rem">Far</b> two-thirds of a screen or more.</p>
+      <p class="txt">Finishers work only during FINISH HIM. Babalities need a round with no punches (HP or LP) at all.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="sys">
+  <h2 id="sys">What's different in v4.0</h2>
+  <ul class="rules">
+    <li><b>Hidden fighters:</b> on the select screen, tap <b>START</b> on Scorpion for <b>Ermac</b>, Kitana for <b>Jade</b>, Sub-Zero for <b>Rain</b>. Tap again to switch back. In the FBNeo / Fightcade set all three are open from power-on. On an arcade board, beat Jade in her secret fight, Shao Kahn, or Smoke to unlock Jade, Ermac or Rain.</li>
+    <li><b>Back-block</b> is on by default: holding away from him blocks.</li>
+    <li><b>Specials out of block:</b> holding BL no longer stops a special.</li>
+    <li><b>Perfect block:</b> tap BL just before a hit lands. You take a quarter of the chip and recover first. Holding block does not count.</li>
+    <li><b>Combo counter and damage scaling:</b> later hits in a string do less. Throws and holds scale too.</li>
+    <li><b>Anti-juggle:</b> more than three hits in, the attacker is pushed back and held until the victim lands.</li>
+    <li><b>Draw, then Sudden Death:</b> the first tie is a draw; the next is Sudden Death on 10% health with no chip damage.</li>
+    <li><b>Costumes:</b> hold START and press HP, LP, HK, LK, BL or insert a coin as you pick. Two players never wear the same colours.</li>
+    <li><b>No Friendships.</b> Stage fatalities work on The Kombat Tomb, The Pit II, Yoteigai Tor and The Pit (MK1). On The Dead Pool, an uppercut during FINISH HIM throws him into the acid.</li>
+  </ul>
+</section>
+
+<nav class="rail" aria-label="Fighters">
+  <div class="chips" id="chips"></div>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Search moves, e.g. teleport, fatality, hold" aria-label="Search moves">
+    <label><input type="checkbox" id="onlynew"> NEW only</label>
+  </div>
+</nav>
+
+<div id="fighters" style="display:flex;flex-direction:column;gap:18px"></div>
+
+<section aria-labelledby="secret">
+  <h2 id="secret">Secret opponents</h2>
+  <div class="grid2">
+    <div class="box"><b>Jade</b><p class="txt">One-player: on the match <b>right before the "?"</b> on the Battle Plan, win a round using <b>only</b> <i class="k LK">LK</i>. No HP, LP, HK or Block at all. You go straight to a fight with Jade.</p></div>
+    <div class="box"><b>Smoke</b><p class="txt">On <b>The Portal</b>, when Dan Forden pops up with "Toasty!" after an uppercut, quickly press <span class="in"><i class="k d">↓</i><span class="sep">+</span><i class="k ST">START</i></span>.</p></div>
+    <div class="box"><b>Noob Saibot</b><p class="txt">One-player: on the <b>Battle Plan</b> screen between matches, hold <i class="k ST">START</i> about 3 seconds without letting go.</p></div>
+    <div class="box"><b>Khameleon</b><p class="txt">One-player: on the <b>Battle Plan</b> screen, tap <i class="k ST">START</i> five times.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="strat">
+  <h2 id="strat">Strategy notes</h2>
+  <ul class="rules">
+    <li><b>Lead with your best hit.</b> Scaling makes later hits worth less.</li>
+    <li><b>Standing Back + HP</b> is a new poke for most of the cast. Crouching Down + HP is still the uppercut.</li>
+    <li><b>Steer your projectiles.</b> Most of them take Up / Down in flight, so jumping them is harder.</li>
+    <li><b>Tap block, don't hold it</b> when you expect a hit: perfect blocks let you punish.</li>
+    <li><b>Scorpion's teleports are a mix-up:</b> Down, Back lands behind; Down, Forward lands in front. They share one cooldown.</li>
+    <li><b>The bosses fight back.</b> Kintaro catches jump-ins out of the air, and both bosses punish what they block.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><a href="https://github.com/junkwax/mk2-rev4" style="color:var(--blood)">Project on GitHub</a> · Built from the v4.0 source (commit b2f2f233) with the release build's switches applied. Mortal Kombat is a trademark of Warner Bros. Entertainment Inc. Unofficial fan project.</p>
+</footer>
+</div>
+
+<script>
+const F=[
+{id:"kunglao",n:"Kung Lao",m:[
+ ["Hat Throw","B F + LP","Steer with Up / Down. Keep holding LP and it comes back (new).",0],
+ ["Teleport","D U","",0],
+ ["Spin","F F + LK","New input (arcade was Up, Up).",1],
+ ["Dive Kick","(air) D + HK","Near the top of a jump.",0],
+ ["Air Escape","(air) F F + LP","",1],
+ ["Backfist","B + HP","Standing.",1]],
+ f:[["Hat Slice","F F F + LK","Sweep",0],["Hat Decapitation","Hold LP , B F , release LP","Far",0],["Babality","B B F F + HK","Any",0],["Stage Fatality","F F F + HP","Close",0]]},
+{id:"liukang",n:"Liu Kang",m:[
+ ["High Fireball","F F + HP","Also in the air.",0],
+ ["Low Fireball","F F + LP","",0],
+ ["Flying Kick","F F + HK","",0],
+ ["Bicycle Kick","Hold LK ~2 sec , release","",0],
+ ["Backfist","B + HP","Standing.",1],
+ ["Double Knee","close HK , HK","Press the second HK immediately. It drives him into the floor; he bounces and can be hit again.",1]],
+ f:[["Dragon","D F B B + HK","Sweep",0],["Cartwheel","Hold BL , D F U B D","Mid",0],["Red Dragon Flame","BL","Mid · Start + LP (red) costume only",1],["Babality","D D F B + LK","Any",0],["Stage Fatality","B F F + LK","Close",0]]},
+{id:"cage",n:"Johnny Cage",note:"The high green bolt is gone; the low one now aims anywhere.",m:[
+ ["Low Green Bolt","D F + LP","New input (arcade B, D, F). Steer with Up / Down.",1],
+ ["Shadow Kick","B F + LK","",0],
+ ["Shadow Uppercut","B B + HP","New input (arcade B, D, B).",1],
+ ["Ceiling Uppercut","F F B + HP","",1],
+ ["Nut Punch","BL + LP","Together.",0],
+ ["Power Punch","B + HP","Standing.",1]],
+ f:[["Torso Rip","D D F F + LP","Close",0],["Triple Head Pop","F F D U","Close · no button",0],["Brain Punch","F B B + HP","Close",1],["Babality","B B B + HK","Any",0],["Stage Fatality","D D D + HK","Close",0]]},
+{id:"baraka",n:"Baraka",m:[
+ ["Blade Sparks","D B + HP","Steer with Up / Down (new).",0],
+ ["Blade Fury","B B B + LP","",0],
+ ["Blade Spin","U U + LK","Enter it as the jump starts. Replaces the arcade block-tap spin.",1],
+ ["Sword Kick (Scissor Takedown)","D + LP + BL","Together. He plants a blade, swings up into a handstand on it and scissors him to the floor with his legs.",1],
+ ["Blade Swipe","B + HP","Standing.",0]],
+ f:[["Decapitation","B B B B + HP","Sweep",0],["Impale","B F D F + LP","Mid",0],["Babality","F F F + HK","Any",0],["Stage Fatality","F F D + HK","Close",0]]},
+{id:"kitana",n:"Kitana",m:[
+ ["Fan Throw","F F + HP + LP","Also in the air. Steer with Up / Down; keep holding HP and it curves back (new).",0],
+ ["Fan Lift","B B B + HP","",0],
+ ["Square Wave Punch","F D B + HP","",0],
+ ["Fan Swipe","B + HP","Standing.",0]],
+ f:[["Kiss of Death","Hold LK , F F D F , release LK","Close",0],["Fan Decapitation","BL BL BL + HK","Close · now two swings, out and back",0],["Babality","D D D + LK","Any",0],["Stage Fatality","F D F + HK","Close",0]]},
+{id:"mileena",n:"Mileena",m:[
+ ["Sai Throw","Hold HP ~½ sec , release","Also in the air.",0],
+ ["Teleport Kick","F F + LK","",0],
+ ["Ground Roll","B B D + HK","",0]],
+ f:[["Sai Stab","F B F + LP","Close · new ending: she cuts him in half",0],["Body Suck","Hold HK ~2 sec , release","Close",0],["Babality","D D D + HK","Any",0],["Stage Fatality","F D F + LK","Close",0]]},
+{id:"shang",n:"Shang Tsung",note:"A morphed Shang uses that fighter's moves and wears their default costume. He turns back on his own after a while, or at once with BL + Up + HK.",m:[
+ ["One Flaming Skull","B B + HP","",0],
+ ["Two Flaming Skulls","B B F + HP","",0],
+ ["Three Flaming Skulls","B B F F + HP","",0],
+ ["Round Punch","B + HP","Standing.",1],
+ ["Elbow Chain","close HP , HP","A second elbow.",1],
+ ["Drop a Morph","BL + U + HK","Back to Shang from any form.",1],
+ ["Morph: Liu Kang","B F F + BL","",0],
+ ["Morph: Kung Lao","B D B + HK","",0],
+ ["Morph: Johnny Cage","B B D + LP","",0],
+ ["Morph: Baraka","D D + LK","",0],
+ ["Morph: Kitana","BL BL BL","",0],
+ ["Morph: Mileena","Hold HP ~1 sec , release","",0],
+ ["Morph: Raiden","D B F + LK","",0],
+ ["Morph: Sub-Zero","F D F + HP","",0],
+ ["Morph: Reptile","Hold BL , U D + HP","",0],
+ ["Morph: Scorpion","Hold BL , U U","",0],
+ ["Morph: Jax","D F B + HK","",0],
+ ["Morph: Ermac","Hold BL , D D U","",1],
+ ["Morph: Jade","F F D D + BL","",1],
+ ["Morph: Rain","Hold D + BL , tap LK","",1]],
+ f:[["Soul Steal","U D U + LK","Close",0],["Backflip Decapitation","F D F + LK","Close",1],["Blade Decapitation","B B F U + LP","Sweep",1],["Spike Impale","Hold HK ~3 sec , release","Sweep or farther · facing him",0],["Kintaro","Hold LP ~18 sec , release","Sweep",0],["Babality","B F D + HK","Any",0],["Stage Fatality","D D U D","Close · no button",0]]},
+{id:"raiden",n:"Raiden",note:"His lightning, and the flash on whoever it hits, match his costume: blue (default), red (Start + HP), purple (Start + LP / HK / LK).",m:[
+ ["Lightning","D F + LP","Steer with Up / Down (new).",0],
+ ["Teleport","D U","",0],
+ ["Torpedo","B B F","No button.",0],
+ ["Electric Grab","Hold HP ~1½ sec , release","Close.",0],
+ ["Short Lightning","B + HP","Standing.",1]],
+ f:[["Electrocution","Hold LK ~2 sec , release","Close",0],["Exploding Uppercut","Hold HP ~7 sec , release","Close",0],["Lift","Hold HK ~3 sec , release","Close",1],["Babality","D D U + HK","Any",0],["Stage Fatality","U U + HP","Close",0]]},
+{id:"subzero",n:"Sub-Zero",m:[
+ ["Ice Ball","D F + LP","Now also in the air.",0],
+ ["Ground Freeze","D B + LK","Now also works in a corner.",0],
+ ["Slide","B + LP + BL + LK","Together.",0],
+ ["Tornado","D B + LP","Midway's cut move, restored.",1]],
+ f:[["Deep Freeze","F F D + HK , then F D F F + HP","Mid to freeze, close to shatter",0],["Ice Bomb","Hold LP , B B D F , release LP","Far",0],["Head Rip","F D F + LP","Close",1],["Babality","D B B + HK","Any",0],["Stage Fatality","D F F + BL","Close",0]]},
+{id:"reptile",n:"Reptile",m:[
+ ["Slow Forceball","B B + HP + LP","Steer with Up / Down (new).",0],
+ ["Fast Forceball","F F + HP + LP","",1],
+ ["Acid Spit","F F + HP","Now also in the air.",0],
+ ["Invisibility","U U D + HP","",0],
+ ["Slide","B + LP + BL + LK","Together.",0],
+ ["Dive Kick","(air) D + HK","Near the top of a jump. Leaves an afterimage.",1]],
+ f:[["Tongue","B B D + LP","Mid · while visible",0],["Invisible Slice","F F D + HK","Close · while invisible",0],["Babality","D B B + LK","Any",0],["Stage Fatality","D F F + BL","Close",0]]},
+{id:"scorpion",n:"Scorpion",m:[
+ ["Spear","B B + LP","",0],
+ ["Teleport Punch","D B + HP","Also in the air. Lands behind him.",0],
+ ["Forward Teleport","D F + HP","Also in the air. Lands in front of him. Shares the teleport's cooldown; not after a flip kick or flip punch that hit him on the ground.",1],
+ ["Leg Takedown","F D B + LK","",0],
+ ["Air Throw","(air) BL","Close to an airborne opponent.",0],
+ ["Sword Slash","B + HP","Standing.",1]],
+ f:[["Toasty (MK2 burn)","D D U U + HP","Any",0],["MK1 Burn","U U + HP","Mid · MK1's flame-and-skeleton finisher",1],["Spear Slice","Hold HP , D F F F , release HP","Close",0],["Babality","D B B + HK","Any",0],["Stage Fatality","D F F + BL","Close",0]]},
+{id:"jax",n:"Jax",m:[
+ ["Energy Wave","F D B + HK","Now also in the air; it travels flat at the height you throw it.",0],
+ ["Gotcha Grab","F F + LP","Tap LP for more punches.",0],
+ ["Ground Pound","Hold LK ~2 sec , release","",0],
+ ["Backbreaker","(air) BL","Close to an airborne opponent.",0],
+ ["Multi-Slam","Tap HP during his throw","Each extra slam does a little less.",0],
+ ["Power Punch","B + HP","Standing.",1]],
+ f:[["Head Clap","Hold LP , F F F , release LP","Close",0],["Arm Rip","BL BL BL BL + LP","Sweep",0],["Babality","D U D U + LK","Any",0],["Stage Fatality","U U D + LK","Close",0]]},
+{id:"jade",n:"Jade",hid:"Tap START on Kitana",m:[
+ ["Boomerang – High","B F + HP","",0],
+ ["Boomerang – Straight","B F + LP","",0],
+ ["Boomerang – Low","B F + LK","",0],
+ ["Boomerang – Returning","B B F + LP","",0],
+ ["Shadow Kick","D F + LK","",0],
+ ["Flash","B F + HK","Projectiles pass through her for a moment. Short recharge.",0]],
+ f:[["Staff Impale","BL BL BL F BL","Close",1],["Babality","D D D + LK","Any",0],["Stage Fatality","F D F + HK","Close",0]]},
+{id:"ermac",n:"Ermac",hid:"Tap START on Scorpion",m:[
+ ["Teleport Punch","D B + HP","Also in the air.",0],
+ ["Fireball","D B + LP","",0],
+ ["Telekinetic Slam","B D B + HK","Not deeper than the 5th hit of a string, and not again for ~2 sec after one connects. A refused slam is a normal high kick.",0]],
+ f:[["Telekinetic Slam","D U D D D + BL","Mid",1],["Telekinetic Head Rip","F B F F + LK","Far",1],["Babality","D B B + LK","Any",1],["Stage Fatality","D F F + BL","Close",0]]},
+{id:"rain",n:"Rain",hid:"Tap START on Sub-Zero",m:[
+ ["Lightning Bolt","B B + HP","Strikes where he stood when you cast it, so he can step out. Short cooldown; refused 3+ hits into a string.",1],
+ ["Storm Cloud","D F + HP","Steer with Up / Down. On a hit the cloud holds him and you move him with the stick.",1],
+ ["Super Roundhouse","B + HK","Knocks him across the screen. Looped, it becomes a normal roundhouse.",1]],
+ f:[["Lightning","D D B F + HK","Mid",1],["Babality","D B B + HK","Any",1],["Stage Fatality","D F F + BL","Close",0]]}
+];
+const D={F:"→",B:"←",U:"↑",D:"↓"},BTN=new Set(["HP","LP","HK","LK","BL"]);
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function inp(s){
+  return '<span class="in">'+s.split(" ").map(t=>{
+    if(D[t])return '<i class="k d" aria-label="'+({F:"forward",B:"back",U:"up",D:"down"})[t]+'">'+D[t]+'</i>';
+    if(BTN.has(t))return '<i class="k '+t+'">'+t+'</i>';
+    if(t==="+")return '<span class="sep">+</span>';
+    if(t===",")return '<span class="sep">,</span>';
+    return '<span class="txt">'+esc(t)+'</span>';
+  }).join("")+'</span>';
+}
+function row(r,fin){
+  const [n,i,x,nw]=r;
+  return '<tr class="'+(nw?"isnew":"")+'" data-s="'+esc((n+" "+i+" "+x).toLowerCase())+'"><td class="mv">'+esc(n)+'</td><td>'+inp(i)+(!fin&&x?'<span class="note">'+esc(x)+'</span>':'')+'</td>'+(fin?'<td class="rg">'+esc(x)+'</td>':'')+'</tr>';
+}
+const host=document.getElementById("fighters"),chips=document.getElementById("chips");
+host.innerHTML=F.map(f=>'<article class="fighter" id="'+f.id+'"><div class="fhead"><h2>'+esc(f.n)+'</h2>'+(f.hid?'<span class="unlock">Hidden · '+esc(f.hid)+'</span>':'')+'</div>'+(f.note?'<p class="fnote">'+esc(f.note)+'</p>':'')+
+ '<h3>Moves</h3><div class="tablewrap"><table><thead><tr><th>Move</th><th>Input</th></tr></thead><tbody>'+f.m.map(r=>row(r,0)).join("")+'</tbody></table></div>'+
+ '<h3>Finishers</h3><div class="tablewrap"><table><thead><tr><th>Finisher</th><th>Input</th><th>Range</th></tr></thead><tbody>'+f.f.map(r=>row(r,1)).join("")+'</tbody></table></div><p class="empty" hidden>No matches for this fighter.</p></article>').join("");
+chips.innerHTML=F.map(f=>'<a href="#'+f.id+'"'+(f.hid?' class="hid"':'')+'>'+esc(f.n)+'</a>').join("");
+const q=document.getElementById("q"),nw=document.getElementById("onlynew");
+function apply(){
+  const s=q.value.trim().toLowerCase(),only=nw.checked;
+  document.querySelectorAll(".fighter").forEach(a=>{
+    let shown=0;const nm=a.querySelector("h2").textContent.toLowerCase();
+    a.querySelectorAll("tbody tr").forEach(tr=>{
+      const ok=(!only||tr.classList.contains("isnew"))&&(!s||tr.dataset.s.includes(s)||nm.includes(s));
+      tr.hidden=!ok;if(ok)shown++;});
+    a.querySelectorAll("table").forEach(t=>{t.closest(".tablewrap").hidden=![...t.tBodies[0].rows].some(r=>!r.hidden);t.closest(".tablewrap").previousElementSibling.hidden=t.closest(".tablewrap").hidden;});
+    a.querySelector(".empty").hidden=shown>0||(!s&&!only);
+    a.hidden=(s||only)&&shown===0;
+  });
+  try{localStorage.setItem("mk2v4-new",only?"1":"0")}catch(e){}
+}
+try{if(localStorage.getItem("mk2v4-new")==="1")nw.checked=true}catch(e){}
+q.addEventListener("input",apply);nw.addEventListener("change",apply);apply();
+</script>
+</body>
+</html>
