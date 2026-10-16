@@ -1,0 +1,27 @@
+set        mk2rev4 (clone of mk2)
+program    Fightcade cut: hidearn 0, assembled in tmp/fightcade
+title      Mortal Kombat II (rev 4.0)
+version    REV 4.0 (EAA637) FC
+commit     b2f2f233
+
+chips
+  mk2rev4.uj12                               fd23dd93  CHANGED
+  mk2rev4.ug12                               d40d34fd  CHANGED
+  mk2rev4.u2                                 fff86ce6  CHANGED
+  mk2rev4.u3                                 a5d9baa8  CHANGED
+  mk2rev4.u4                                 51ef6866  CHANGED
+  mk2rev4.u5                                 373de0e7  CHANGED
+  mk2rev4.u6                                 b05d11bf  CHANGED
+  mk2rev4.u7                                 a51de7aa  CHANGED
+  mk2rev4.ug14                               9c864f0f  CHANGED
+  mk2rev4.uj14                               3314f622  CHANGED
+  mk2rev4.ug19                               e768a4ce  CHANGED
+  mk2rev4.uj19                               04305b16  CHANGED
+  mk2rev4.ug16                               1e5325f3  CHANGED
+  mk2rev4.uj16                               8004a3b6  CHANGED
+  mk2rev4.ug20                               0c929fba  CHANGED
+  mk2rev4.uj20                               7ed4ba0d  CHANGED
+  mk2rev4.ug17                               3924479e  CHANGED
+  mk2rev4.uj17                               a1af4391  CHANGED
+  mk2rev4.ug22                               d7bd61c3  CHANGED
+  mk2rev4.uj22                               53dc6b89  CHANGED

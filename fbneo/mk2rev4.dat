@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<datafile>
+	<game name="mk2rev4" cloneof="mk2" romof="mk2">
+		<description>Mortal Kombat II (rev 4.0)</description>
+		<year>2026</year>
+		<manufacturer>hack</manufacturer>
+		<rom name="mk2rev4.uj12" size="524288" crc="fd23dd93" md5="3b74d9f0e56e9dcba9f73a2486512f77" sha1="6b9a07166b50796e82863068ef14837498592808"/>
+		<rom name="mk2rev4.ug12" size="524288" crc="d40d34fd" md5="5038322e91232d4cf9320dc4d6291dc4" sha1="afe49e506a0f989785ca30d1b5c9d5227032ee60"/>
+		<rom name="mk2rev4.u2" size="524288" crc="fff86ce6" md5="25579d94cd9556210062f25525bdf1aa" sha1="9912cc81ff2ca2b0a80b0dbe881c7cf1f77cf515"/>
+		<rom name="mk2rev4.u3" size="524288" crc="a5d9baa8" md5="12272939c2adfa293b20df3e49817c3d" sha1="30ba2e364eb6b3ef85ad33e5abb0e36ace4c67ad"/>
+		<rom name="mk2rev4.u4" size="524288" crc="51ef6866" md5="378a4484636ad0ad6dee1d17ab24ae2f" sha1="6ea6d6bbf9ed00e00ce952c6126bb0ed8698fd40"/>
+		<rom name="mk2rev4.u5" size="524288" crc="373de0e7" md5="f901608153d31519516b126ae6221ff8" sha1="a98eb3cf50fb3776429e6e12e85b8875ffcefca5"/>
+		<rom name="mk2rev4.u6" size="524288" crc="b05d11bf" md5="b9eb54246c34ecbcf841fc63d949f3be" sha1="bb19cb3adb2d36c44552f257a35b75aef595c668"/>
+		<rom name="mk2rev4.u7" size="524288" crc="a51de7aa" md5="c3ca1cb09923dfe784ca47bbc082abae" sha1="9a6dd45179230c81a2a5f597ed49d1394d828586"/>
+		<rom name="mk2rev4.ug14" size="1048576" crc="9c864f0f" md5="98b29717dc4ae7dac72f808d08e33a8c" sha1="c310cb2711f1bf5030ddc9372a39a32f6e91b674"/>
+		<rom name="mk2rev4.uj14" size="1048576" crc="3314f622" md5="fcada02c87fc9dd41b7aa54c82b2b9b6" sha1="1ca8da30ae49b0945e8560f790e7c22ed963a87f"/>
+		<rom name="mk2rev4.ug19" size="1048576" crc="e768a4ce" md5="5eadc51018bfc48b919540aff470a2e5" sha1="69c47a4556e6184b9086af922b69050cf4debb3c"/>
+		<rom name="mk2rev4.uj19" size="1048576" crc="04305b16" md5="c6117da01e677f8942c25d4a5cc3d3ae" sha1="d601b461501a1ffb10912165f8062ffdf4a2b350"/>
+		<rom name="mk2rev4.ug16" size="1048576" crc="1e5325f3" md5="c9388e204d43e66ec979959535fbcc31" sha1="3e1307c5d7241f52a26c28760711e0ca0a073d8e"/>
+		<rom name="mk2rev4.uj16" size="1048576" crc="8004a3b6" md5="b604814172d85ce0b3ecfaf618750ab4" sha1="5252b786b843cf8b608293ae9c039106e69ed882"/>
+		<rom name="mk2rev4.ug20" size="1048576" crc="0c929fba" md5="e1e25b0f3ce75d9b8b10f4680a1d7fb7" sha1="19c7e86254f8f8574666391fc706d6f9ffc937a9"/>
+		<rom name="mk2rev4.uj20" size="1048576" crc="7ed4ba0d" md5="b3a70164fafcedd859c1514dacffad5f" sha1="74167ec3323e1059e96e9d47f6a85800f9448ef7"/>
+		<rom name="mk2rev4.ug17" size="1048576" crc="3924479e" md5="725edb010248d3990796238a346b1eaf" sha1="1f5078406122e1ea2816e34f24a5597040740faa"/>
+		<rom name="mk2rev4.uj17" size="1048576" crc="a1af4391" md5="5c36d2fb7a28a5369869b9445aad68bd" sha1="fe4d5d5099b42e5ba1cb24800078624f2b2c5787"/>
+		<rom name="mk2rev4.ug22" size="1048576" crc="d7bd61c3" md5="d35078d4d43bcd8bd332a607f652c022" sha1="d24d400ea8f19331dac205fa759b627039c9d6af"/>
+		<rom name="mk2rev4.uj22" size="1048576" crc="53dc6b89" md5="07b6206c3a974b1a52942db8463b40ee" sha1="60035420f9cd7dc808af4695e0ac575248253ba0"/>
+	</game>
+</datafile>

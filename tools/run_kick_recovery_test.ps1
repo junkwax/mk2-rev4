@@ -1,0 +1,80 @@
+# run_reptile_frozen_spit_test.ps1 - Reptile keeps his face when frozen
+# mid-acid-spit.  See tools/sweep_addon_kickrecover.lua for what is measured.
+#
+# Reuses battle_stability_sweep.lua purely as a harness: it already forces the
+# matchup (SWEEP_P1/P2/STAGE) and walks the select screen, and it loads
+# tools/sweep_addon.lua if that file exists.  The addon is COPIED into place
+# for the run and removed afterwards, because any later stability sweep would
+# otherwise pick it up and drive the sticks.
+param(
+    [string]$Mame = "C:\MAME\mame.exe",
+    [string]$RomPath = "C:\Users\you\Workplace\mk2-main\rom",
+    [int]$Backstop = 150,
+    [switch]$Throttle,
+    # Character to measure. 4 = Kitana / 5 = Mileena are the ones whose retract
+    # lane is six frames, so they recover 4 ticks slower than everyone else.
+    [int]$P1 = 1
+)
+$ErrorActionPreference = "Continue"
+$ToolsDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Root = Split-Path -Parent $ToolsDir
+$Addon = Join-Path $ToolsDir "sweep_addon.lua"
+$Src = Join-Path $ToolsDir "sweep_addon_kickrecover.lua"
+$Lua = Join-Path $ToolsDir "battle_stability_sweep.lua"
+$Log = Join-Path $ToolsDir "kick_recovery.txt"
+$SnapDir = Join-Path $ToolsDir "screens\frozen_spit"
+
+# Two MAME rigs fight over the same window and kill each other; a leftover
+# key-poker job posts into whatever window appears next.  Clear both first.
+Get-Process mame* -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+Get-Job -ErrorAction SilentlyContinue | Where-Object { $_.State -eq 'Running' } |
+    ForEach-Object { Stop-Job $_ -ErrorAction SilentlyContinue; Remove-Job $_ -Force -ErrorAction SilentlyContinue }
+
+New-Item -ItemType Directory -Force $SnapDir | Out-Null
+Remove-Item $Log -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "C:\MAME\nvram\mk2" -ErrorAction SilentlyContinue
+Copy-Item $Src $Addon -Force
+
+$env:SWEEP_P1 = "$P1"
+$env:SWEEP_P2 = "11"         # Jax
+$env:SWEEP_STAGE = "0"
+$env:SWEEP_OBSERVE = "3000"  # three phases of 900 frames plus settle
+$env:SWEEP_LABEL = "kick_recovery"
+$env:SWEEP_LOG = Join-Path $ToolsDir "kick_recovery_sweep.log"
+$env:SWEEP_P2_HUMAN = "1"    # Sub-Zero must be driveable, not a drone
+$env:SWEEP_NO_HP_PIN = "0"
+$env:KICKREC_LOG = $Log
+
+
+$mameArgs = @("-rompath",$RomPath,"mk2","-window","-nomaximize","-resolution","640x480",
+  "-video","gdi","-sound","none","-keyboardprovider","win32","-skip_gameinfo",
+  "-snapshot_directory",$SnapDir,"-autoboot_script",$Lua,"-seconds_to_run",$Backstop)
+if (-not $Throttle) { $mameArgs += "-nothrottle" }
+
+Write-Host "[kickrec] Reptile (P1) vs Sub-Zero (P2, human), Dead Pool ..."
+$proc = Start-Process -FilePath $Mame -WorkingDirectory (Split-Path -Parent $Mame) `
+    -ArgumentList $mameArgs -PassThru `
+    -RedirectStandardOutput (Join-Path $ToolsDir "kick_recovery_mame.log") `
+    -RedirectStandardError  (Join-Path $ToolsDir "kick_recovery_mame.err")
+
+# Poke past the ROM-warning screen; without this the battle silently never
+# starts and scores as a failure it never had.
+$wsh = New-Object -ComObject WScript.Shell
+for ($i = 0; $i -lt 40; $i++) {
+    Start-Sleep -Milliseconds 700
+    if ($proc.HasExited) { break }
+    if (Test-Path $Log) { break }
+    try { $wsh.AppActivate($proc.Id) | Out-Null; $wsh.SendKeys("{ENTER}") } catch {}
+}
+
+$proc | Wait-Process -Timeout ($Backstop + 90) -ErrorAction SilentlyContinue
+if (-not $proc.HasExited) { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue }
+
+Remove-Item $Addon -ErrorAction SilentlyContinue
+foreach ($e in @("SWEEP_P1","SWEEP_P2","SWEEP_STAGE","SWEEP_OBSERVE","SWEEP_LABEL",
+                 "SWEEP_LOG","SWEEP_P2_HUMAN","SWEEP_NO_HP_PIN","KICKREC_LOG")) {
+    Remove-Item "env:$e" -ErrorAction SilentlyContinue
+}
+
+if (Test-Path $Log) { Get-Content $Log } else { Write-Host "[kickrec] no log produced" }
+Write-Host "[kickrec] snapshots: $SnapDir"

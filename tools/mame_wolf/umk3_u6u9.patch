@@ -1,0 +1,47 @@
+diff --git a/src/mame/midway/midwunit.cpp b/src/mame/midway/midwunit.cpp
+index 8f6b2123..636f5b06 100644
+--- a/src/mame/midway/midwunit.cpp
++++ b/src/mame/midway/midwunit.cpp
+@@ -868,11 +868,15 @@ ROM_END
+ 
+ 
+ ROM_START( umk3 )
+-	ROM_REGION16_LE( 0x800000, "dcs", ROMREGION_ERASEFF )   // sound data
++	ROM_REGION16_LE( 0x1000000, "dcs", ROMREGION_ERASEFF )   // sound data
+ 	ROM_LOAD16_BYTE( "l2.0_mortal_kombat_3_u2_ultimate.u2", 0x000000, 0x100000, CRC(3838cfe5) SHA1(e3d2901f3bae1362742fc6ee0aa31c9f63b4dfa3) ) // verified labeled as L2.0
+ 	ROM_LOAD16_BYTE( "l1_mortal_kombat_3_u3_music_spch.u3", 0x200000, 0x100000, CRC(856fe411) SHA1(6165ebecfce7500e948d84492ffa19eed7f47091) )
+ 	ROM_LOAD16_BYTE( "l1_mortal_kombat_3_u4_music_spch.u4", 0x400000, 0x100000, CRC(428a406f) SHA1(e70ec83cd054de0da1e178720ed0035b8887f797) )
+ 	ROM_LOAD16_BYTE( "l1_mortal_kombat_3_u5_music_spch.u5", 0x600000, 0x100000, CRC(3b98a09f) SHA1(edf1d02a56dcf3349e6b4bb4097acfe7592305f4) )
++	ROM_LOAD16_BYTE( "mk2wolf_sound_rom_u6.u6", 0x800000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: spare sockets u6-u9 (mk2-main makewolf.py)
++	ROM_LOAD16_BYTE( "mk2wolf_sound_rom_u7.u7", 0xa00000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: spare sockets u6-u9 (mk2-main makewolf.py)
++	ROM_LOAD16_BYTE( "mk2wolf_sound_rom_u8.u8", 0xc00000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: spare sockets u6-u9 (mk2-main makewolf.py)
++	ROM_LOAD16_BYTE( "mk2wolf_sound_rom_u9.u9", 0xe00000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: spare sockets u6-u9 (mk2-main makewolf.py)
+ 
+ 	ROM_REGION16_LE( 0x100000, "maincpu", 0 )   // 34010 code
+ 	ROM_LOAD16_BYTE( "l1.2_mortal_kombat_3_u54_ultimate.u54",  0x00000, 0x80000, CRC(712b4db6) SHA1(7015a55f3d745c6aeb8630903e2d5cd9554b2766) )
+@@ -903,11 +907,25 @@ ROM_START( umk3 )
+ 	ROM_LOAD32_BYTE( "umk-u118.bin",  0x0c00003, 0x100000, CRC(de0c4488) SHA1(227cab34798c440b2a45223567113df5f17d913f) )
+ 
+ 	// sockets U114 through U117 are left empty for this version
++	// MK2 on Wolf fills them, and u102-u109 below
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u117.u117",  0x1000000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u116.u116",  0x1000001, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u115.u115",  0x1000002, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u114.u114",  0x1000003, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
+ 
+ 	ROM_LOAD32_BYTE( "umk-u113.bin",  0x1400000, 0x100000, CRC(99d74a1e) SHA1(ed3068afa98287ea290d1f537f5009d3b6d683da) )
+ 	ROM_LOAD32_BYTE( "umk-u112.bin",  0x1400001, 0x100000, CRC(b5a46488) SHA1(dbf22e55d200eb9ff550f48b223cf0c6114a9357) )
+ 	ROM_LOAD32_BYTE( "umk-u111.bin",  0x1400002, 0x100000, CRC(a87523c8) SHA1(e70b7599fef82001f762fc2c48f7b85474431ccc) )
+ 	ROM_LOAD32_BYTE( "umk-u110.bin",  0x1400003, 0x100000, CRC(0038f205) SHA1(059c1c71a2d92ee6db36c09831d213a48a7e81d0) )
++
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u109.u109",  0x1800000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u108.u108",  0x1800001, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u107.u107",  0x1800002, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u106.u106",  0x1800003, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u105.u105",  0x1c00000, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u104.u104",  0x1c00001, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u103.u103",  0x1c00002, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
++	ROM_LOAD32_BYTE( "mk2wolf_video_rom_u102.u102",  0x1c00003, 0x100000, CRC(ffffffff) SHA1(0000000000000000000000000000000000000000) ) // MK2 on Wolf: empty UMK3 socket (mk2-main makewolf.py)
+ ROM_END
+ 
+ 

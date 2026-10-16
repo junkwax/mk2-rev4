@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""Build data/ARNSKY.BIN - KAHN'S ARENA's sky as a raw texture, for per-line haze.
+
+The arena's sky is baklst7 = arena6BMOD: 15 overlapping blocks on two palettes.
+To bend it one scanline at a time, sky_rows (MKDISP.ASM) draws it the way
+floor_code draws a floor - ONE single-row DMA blit per screen line, each at its
+own x - and a single-row blit needs uncompressed art it can start mid-image
+(the DMA advances its source by the blit width per row and has no stride). So
+the plane is composited here into one raw 6bpp texture, the format of
+data/TWRJNT.BIN.
+
+A blit carries one colour map, and the blocks use two palettes, so the texture
+is two LAYERS stacked in one image:
+    rows 0 .. BK_N-1       the doom2_p blocks (z 16128), original indices
+    rows BK_N .. BK_N+FR_N-1  the doomsky_p blocks (z 16384..16400), original indices
+In the game's draw order every doom2_p block comes before every doomsky_p block
+(asserted), so a screen line's back row then its front row layers as the game
+does.  One block, (632,74), is h-flipped (z bit 0x10) - ignoring that cost 573
+wrong pixels in the first MAME comparison.
+Indices are the blocks' own - no remap, no new palette: the renderer finds both
+palettes' live slots with findpal.
+
+Everything is derived from data/ARENA.BDB/.BDD and src/BGND.ASM's arena_mod
+(the plane's world position); nothing is authored. src/ARNSKYEQ.ASM carries the
+geometry the renderer needs.
+
+    python tools/make_arnsky_bin.py            # write BIN + equates + preview
+    python tools/make_arnsky_bin.py --check    # Phase D: are they current?
+"""
+from __future__ import annotations
+
+import argparse
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+import stage_preview as sp  # noqa: E402
+
+BIN = ROOT / "data" / "ARNSKY.BIN"
+EQU = ROOT / "src" / "ARNSKYEQ.ASM"
+BPP = 6
+MODULE = "ARENA6BMOD"
+BACK_PAL, FRONT_PAL = "doom2_p", "doomsky_p"
+FLIP = 0x10                     # a block's z bit: drawn h-flipped
+
+
+def plane_world_xy():
+    """arena_mod's baklst7 entry: `.long arena6BMOD` then `.word x,y`."""
+    t = (ROOT / "src" / "BGND.ASM").read_text(errors="replace")
+    m = re.search(r"\.long\s+arena6BMOD\s*;[^\n]*\n\s*\.word\s+([0-9A-Fa-f]+)h\s*,\s*([0-9A-Fa-f]+)h", t)
+    if not m:
+        sys.exit("arena_mod's arena6BMOD placement not found in src/BGND.ASM")
+    return int(m.group(1), 16), int(m.group(2), 16)
+
+
+def build():
+    imgs, order, pals = sp.load_bdd(ROOT / "data" / "ARENA.BDD")
+    _n, _world, _np, mods, blks = sp.load_bdb(ROOT / "data" / "ARENA.BDB")
+    sp.assign_modules(mods, blks, imgs, order)
+    mod = next(m for m in mods if (m["label"] + "BMOD").upper() == MODULE)
+    names = [n for n, _ in pals]
+    back_i, front_i = names.index(BACK_PAL), names.index(FRONT_PAL)
+    others = {b["pal"] for b in mod["blocks"]} - {back_i, front_i}
+    if others:
+        sys.exit(f"{MODULE} has blocks on palettes {others}; the texture holds two layers")
+    draw = draw_order(mod)
+    runs = [draw[0]["pal"]] + [b["pal"] for p, b in zip(draw, draw[1:]) if b["pal"] != p["pal"]]
+    if runs != [back_i, front_i]:
+        sys.exit(f"in draw order the palettes run {runs}; the texture holds doom2_p then doomsky_p")
+    back = [b for b in draw if b["pal"] == back_i]
+    front = [b for b in draw if b["pal"] == front_i]
+
+    cw, ch = mod["x2"] - mod["x1"] + 1, mod["y2"] - mod["y1"] + 1
+
+    def layer(blocks):
+        can = [[0] * cw for _ in range(ch)]
+        for b in blocks:                                         # already in draw order
+            paint(can, b, imgs, mod, lambda i: i)
+        return can
+
+    lb, lf = layer(back), layer(front)
+    if max(max(r) for r in lb + lf) >= 1 << BPP:
+        sys.exit("an index does not fit %d bits" % BPP)
+
+    def rows_used(can):
+        ys = [y for y in range(ch) if any(can[y])]
+        return ys[0], ys[-1]
+
+    cols = [x for x in range(cw) if any(lb[y][x] or lf[y][x] for y in range(ch))]
+    x0, x1 = cols[0], cols[-1]
+    (by0, by1), (fy0, fy1) = rows_used(lb), rows_used(lf)
+    w = x1 - x0 + 1
+    tex = [r[x0:x1 + 1] for r in lb[by0:by1 + 1]] + [r[x0:x1 + 1] for r in lf[fy0:fy1 + 1]]
+
+    wx, wy = plane_world_xy()        # world position of the module's canvas origin
+    geo = dict(W=w, H=len(tex), X0=wx + x0, BK_Y0=wy + by0, BK_N=by1 - by0 + 1,
+               FR_Y0=wy + fy0, FR_N=fy1 - fy0 + 1, BLOCKS=len(mod["blocks"]))
+    return tex, geo, (imgs, mod, pals, back_i, front_i)
+
+
+def pack(tex):
+    out, acc, n = bytearray(), 0, 0
+    for row in tex:
+        for v in row:
+            acc |= v << n
+            n += BPP
+            while n >= 8:
+                out.append(acc & 0xFF)
+                acc >>= 8
+                n -= 8
+    if n:
+        out.append(acc & 0xFF)
+    return bytes(out)
+
+
+def equates(geo):
+    lines = [
+        "*",
+        "* GENERATED by tools/make_arnsky_bin.py from data/ARENA.BDB/.BDD and",
+        "* arena_mod - do not edit; Phase D fails if it drifts.  KAHN'S ARENA's sky",
+        "* (arena6BMOD, %d blocks) as data/ARNSKY.BIN: %dx%d raw %dbpp, two layers." % (
+            geo["BLOCKS"], geo["W"], geo["H"], BPP),
+        "*",
+        "ARNSKY_W\t.set\t%d\t\t; texture width, pixels" % geo["W"],
+        "ARNSKY_X0\t.set\t%d\t\t; world x of column 0" % geo["X0"],
+        "ARNSKY_BK_N\t.set\t%d\t\t; doom2_p rows, texture rows 0.." % geo["BK_N"],
+        "ARNSKY_BK_Y0\t.set\t%d\t\t; world y of the first doom2_p row" % geo["BK_Y0"],
+        "ARNSKY_FR_N\t.set\t%d\t\t; doomsky_p rows, after the doom2_p rows" % geo["FR_N"],
+        "ARNSKY_FR_Y0\t.set\t%d\t\t; world y of the first doomsky_p row" % geo["FR_Y0"],
+        "",
+    ]
+    return "\r\n".join(lines)
+
+
+def draw_order(mod):
+    """The order the game's baklst7 list holds the blocks (head first = drawn
+    first).  Read back out of MAME on 2026-09-16 and matched exactly by: z with
+    the flip bit masked, then y ascending, ties in reverse BDB order.  Sorting
+    by raw z instead put the flipped block (632,74) after its neighbours."""
+    idx = {id(b): i for i, b in enumerate(mod["blocks"])}
+    return sorted(mod["blocks"], key=lambda b: (b["z"] & ~FLIP, b["y"], -idx[id(b)]))
+
+
+def paint(can, b, imgs, mod, colour):
+    """One block onto a canvas the way the DMA draws it: zeros transparent, and
+    h-flipped when its z carries FLIP (stage_preview.py's rule; (632,74) is the
+    mirror of (546,74), same header 0x21)."""
+    im = imgs[b["hdr"]]
+    flip = bool(b["z"] & FLIP)
+    for y in range(im["h"]):
+        row = can[b["y"] - mod["y1"] + y]
+        for x in range(im["w"]):
+            i = im["px"][y * im["w"] + x]
+            if i:
+                row[b["x"] - mod["x1"] + (im["w"] - 1 - x if flip else x)] = colour(i)
+
+
+def prove(tex, geo, ctx):
+    """End to end, in COLOUR: the plane as the game draws it (every block in list
+    order, flipped where flagged, each on its own palette) against the texture as
+    sky_rows draws it (per screen line, the back layer's row then the front
+    layer's, each on its layer's palette).  It shares build()'s draw order and
+    flip rule, which only MAME can confirm: tools/arena_haze_test.lua's rows_0
+    shot must equal the plain blocks to the pixel."""
+    imgs, mod, pals, back_i, front_i = ctx
+    wx, wy = plane_world_xy()
+    cw, ch = mod["x2"] - mod["x1"] + 1, mod["y2"] - mod["y1"] + 1
+    game = [[None] * cw for _ in range(ch)]
+    for b in draw_order(mod):
+        pal = pals[b["pal"]][1]
+        paint(game, b, imgs, mod, lambda i, pal=pal: pal[i])
+    rows = [[None] * cw for _ in range(ch)]
+    for first, n, y0, pal in ((0, geo["BK_N"], geo["BK_Y0"], pals[back_i][1]),
+                              (geo["BK_N"], geo["FR_N"], geo["FR_Y0"], pals[front_i][1])):
+        for r in range(n):
+            gy = y0 + r - wy
+            for tx, i in enumerate(tex[first + r]):
+                if i:
+                    rows[gy][geo["X0"] + tx - wx] = pal[i]
+    checked = sum(1 for y in range(ch) for x in range(cw) if game[y][x] is not None or rows[y][x] is not None)
+    bad = sum(1 for y in range(ch) for x in range(cw) if game[y][x] != rows[y][x])
+    return checked, bad
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--check", action="store_true")
+    a = ap.parse_args()
+    tex, geo, ctx = build()
+    data, equ = pack(tex), equates(geo)
+    checked, bad = prove(tex, geo, ctx)
+    if bad:
+        print(f"ARNSKY: {bad} of {checked} plane pixels differ from the game's draw")
+        return 1
+    if a.check:
+        stale = [p.name for p, want in ((BIN, data), (EQU, equ.encode("latin-1")))
+                 if not p.exists() or p.read_bytes() != want]
+        if stale:
+            print("ARNSKY: %s stale - run tools/make_arnsky_bin.py" % ", ".join(stale))
+            return 1
+        print(f"ARNSKY OK ({geo['W']}x{geo['H']}, {checked} plane pixels match the game's draw)")
+        return 0
+    BIN.write_bytes(data)
+    EQU.write_bytes(equ.encode("latin-1"))
+    try:
+        from PIL import Image
+        _imgs, _mod, pals, back_i, front_i = ctx
+        def rgb(c):
+            return (((c >> 10) & 31) << 3, ((c >> 5) & 31) << 3, (c & 31) << 3)
+        im = Image.new("RGB", (geo["W"], geo["H"]), (104, 64, 104))
+        for y, row in enumerate(tex):
+            pal = pals[back_i if y < geo["BK_N"] else front_i][1]
+            for x, v in enumerate(row):
+                if v:
+                    im.putpixel((x, y), rgb(pal[v]))
+        (ROOT / "tmp").mkdir(exist_ok=True)
+        im.resize((geo["W"] * 2, geo["H"] * 2)).save(ROOT / "tmp" / "arnsky_preview.png")
+    except ImportError:
+        pass
+    print(f"wrote {BIN.name} ({len(data):,} bytes) and {EQU.name}: {geo}")
+    print(f"proved {checked} plane pixels against the game's draw, 0 wrong")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
