@@ -3,7 +3,7 @@
 Every move below was checked against the v4.0 build itself (the FBNeo / Fightcade
 set `mk2rev4`), with the build's own switches applied. Moves that were tried
 during development and switched off before release (Kitana's spin chop, Cage's
-flip kick and air shadow kick, Baraka's sword kick, Rain's knee-into-super link)
+flip kick and air shadow kick, Rain's knee-into-super link)
 are **not** listed, because they are not in the game.
 
 **NEW** marks something that is not in arcade MK2 (L3.1). Everything else is the
@@ -139,7 +139,7 @@ anywhere.
 | Blade Sparks | `D, B + HP`. **NEW:** steer with U / D |
 | Blade Fury | `B, B, B + LP` |
 | Blade Spin | **NEW input** `U, U + LK`, entered right as the jump starts (the arcade block-tap spin is gone) |
-| Leg Grab | **NEW** `D + LP + BL` together |
+| Sword Kick (Scissor Takedown) | **NEW** `D + LP + BL` together. He plants a blade, swings up into a handstand on it and scissors him to the floor with his legs |
 | Blade Swipe | `B + HP` (standing) |
 
 | Finisher | Input | Range |
