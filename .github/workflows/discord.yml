@@ -1,0 +1,83 @@
+# Posts repo activity to the Discord channel via webhook.
+# Needs the DISCORD_WEBHOOK repo secret (Settings > Secrets and variables > Actions).
+name: Discord
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, closed]
+  release:
+    types: [published]
+  # GitHub Pages' own deploy of docs/ (the move list site)
+  workflow_run:
+    workflows: [pages-build-deployment]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Describe event
+        id: msg
+        env:
+          EVENT: ${{ github.event_name }}
+          COMMITS: ${{ toJSON(github.event.commits) }}
+          COMPARE: ${{ github.event.compare }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_ACTION: ${{ github.event.action }}
+          PR_MERGED: ${{ github.event.pull_request.merged }}
+          REL_NAME: ${{ github.event.release.name || github.event.release.tag_name }}
+          REL_URL: ${{ github.event.release.html_url }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          PAGES_URL: https://junkwax.github.io/mk2-rev4/
+        run: |
+          case "$EVENT" in
+            push)
+              title="Pushed to main"
+              url="$COMPARE"
+              desc=$(echo "$COMMITS" | jq -r '.[] | "- [`\(.id[0:7])`](\(.url)) \(.message | split("\n")[0])"' | head -n 10)
+              ;;
+            pull_request)
+              state="$PR_ACTION"
+              [ "$PR_ACTION" = closed ] && [ "$PR_MERGED" = true ] && state=merged
+              title="PR #$PR_NUM $state"
+              url="$PR_URL"
+              desc="$PR_TITLE"
+              ;;
+            release)
+              title="Release: $REL_NAME"
+              url="$REL_URL"
+              desc="New release published. Grab the patches from the release page."
+              ;;
+            workflow_run)
+              title="Move list site deployed"
+              [ "$RUN_CONCLUSION" != success ] && title="Move list site deploy: $RUN_CONCLUSION"
+              url="$PAGES_URL"
+              desc="$PAGES_URL"
+              ;;
+          esac
+          {
+            echo "title=$title"
+            echo "url=$url"
+            echo "desc<<EOF"
+            echo "$desc"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'success' && 'Failure' || job.status }}
+          title: ${{ steps.msg.outputs.title }}
+          url: ${{ steps.msg.outputs.url }}
+          description: ${{ steps.msg.outputs.desc }}
+          username: MK2 Rev 4.0
+          # Fork PRs don't get secrets; skip quietly instead of erroring
+          ack_no_webhook: true
