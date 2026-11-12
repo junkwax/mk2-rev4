@@ -7,6 +7,8 @@ on:
     branches: [main]
   pull_request:
     types: [opened, reopened, closed]
+  issues:
+    types: [opened, reopened, closed]
   release:
     types: [published]
   # GitHub Pages' own deploy of docs/ (the move list site)
@@ -32,6 +34,10 @@ jobs:
           PR_NUM: ${{ github.event.pull_request.number }}
           PR_ACTION: ${{ github.event.action }}
           PR_MERGED: ${{ github.event.pull_request.merged }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_NUM: ${{ github.event.issue.number }}
+          ISSUE_REASON: ${{ github.event.issue.state_reason }}
           REL_NAME: ${{ github.event.release.name || github.event.release.tag_name }}
           REL_URL: ${{ github.event.release.html_url }}
           RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
@@ -49,6 +55,13 @@ jobs:
               title="PR #$PR_NUM $state"
               url="$PR_URL"
               desc="$PR_TITLE"
+              ;;
+            issues)
+              state="$PR_ACTION"
+              [ "$PR_ACTION" = closed ] && [ "$ISSUE_REASON" = not_planned ] && state="closed (not planned)"
+              title="Issue #$ISSUE_NUM $state"
+              url="$ISSUE_URL"
+              desc="$ISSUE_TITLE"
               ;;
             release)
               title="Release: $REL_NAME"

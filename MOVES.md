@@ -221,7 +221,7 @@ has been unlocked (all three work from power-on in the FBNeo / Fightcade set).
 | Fatality – Soul Steal | `U, D, U + LK` | Close |
 | Fatality – Backflip Decapitation | **NEW** `F, D, F + LK` | Close |
 | Fatality – Blade Decapitation | **NEW** `B, B, F, U + LP` | Sweep |
-| Fatality – Spike Impale | Hold HK about 3 seconds, release (facing him) | Sweep or farther |
+| Fatality – Inner Explosion | Hold HK about 3 seconds, release (facing him) | Sweep or farther |
 | Fatality – Kintaro | Hold LP about 18 seconds, release | Sweep |
 | Babality | `B, F, D + HK` | Any |
 | Stage Fatality | `D, D, U, D` (no button) | Close |

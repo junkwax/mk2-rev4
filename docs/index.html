@@ -224,14 +224,14 @@ const F=[
  ["Morph: Ermac","Hold BL , D D U","",1],
  ["Morph: Jade","F F D D + BL","",1],
  ["Morph: Rain","Hold D + BL , tap LK","",1]],
- f:[["Soul Steal","U D U + LK","Close",0],["Backflip Decapitation","F D F + LK","Close",1],["Blade Decapitation","B B F U + LP","Sweep",1],["Spike Impale","Hold HK ~3 sec , release","Sweep or farther · facing him",0],["Kintaro","Hold LP ~18 sec , release","Sweep",0],["Babality","B F D + HK","Any",0],["Stage Fatality","D D U D","Close · no button",0]]},
+ f:[["Soul Steal","U D U + LK","Close",0],["Backflip Decapitation","F D F + LK","Close",1],["Blade Decapitation","B B F U + LP","Sweep",1],["Inner Explosion","Hold HK ~3 sec , release","Sweep or farther · facing him",0],["Kintaro","Hold LP ~18 sec , release","Sweep",0],["Babality","B F D + HK","Any",0],["Stage Fatality","D D U D","Close · no button",0]]},
 {id:"raiden",n:"Raiden",note:"His lightning, and the flash on whoever it hits, match his costume: blue (default), red (Start + HP), purple (Start + LP / HK / LK).",m:[
  ["Lightning","D F + LP","Steer with Up / Down (new).",0],
  ["Teleport","D U","",0],
  ["Torpedo","B B F","No button.",0],
  ["Electric Grab","Hold HP ~1½ sec , release","Close.",0],
  ["Short Lightning","B + HP","Standing.",1]],
- f:[["Electrocution","Hold LK ~2 sec , release","Close",0],["Exploding Uppercut","Hold HP ~7 sec , release","Close",0],["Lift","Hold HK ~3 sec , release","Close · then hold Up and keep tapping HP until he explodes; stop and he just drops. Press HK out of kick range: a kick that lands ends FINISH HIM",1],["Babality","D D U + HK","Any",0],["Stage Fatality","U U + HP","Close",0]]},
+ f:[["Electrocution","Hold LK ~2 sec , release","Close",0],["Exploding Uppercut","Hold HP ~7 sec , release","Close",0],["Lift","Hold HK ~3 sec , release","Close",1,"Then hold Up and keep tapping HP until he explodes; stop and he just drops. Press HK out of kick range: a kick that lands ends FINISH HIM."],["Babality","D D U + HK","Any",0],["Stage Fatality","U U + HP","Close",0]]},
 {id:"subzero",n:"Sub-Zero",m:[
  ["Ice Ball","D F + LP","Now also in the air.",0],
  ["Ground Freeze","D B + LK","Now also works in a corner.",0],
@@ -293,8 +293,8 @@ function inp(s){
   }).join("")+'</span>';
 }
 function row(r,fin){
-  const [n,i,x,nw]=r;
-  return '<tr class="'+(nw?"isnew":"")+'" data-s="'+esc((n+" "+i+" "+x).toLowerCase())+'"><td class="mv">'+esc(n)+'</td><td>'+inp(i)+(!fin&&x?'<span class="note">'+esc(x)+'</span>':'')+'</td>'+(fin?'<td class="rg">'+esc(x)+'</td>':'')+'</tr>';
+  const [n,i,x,nw,nt]=r,note=fin?nt:x;
+  return '<tr class="'+(nw?"isnew":"")+'" data-s="'+esc((n+" "+i+" "+x+" "+(nt||"")).toLowerCase())+'"><td class="mv">'+esc(n)+'</td><td>'+inp(i)+(note?'<span class="note">'+esc(note)+'</span>':'')+'</td>'+(fin?'<td class="rg">'+esc(x)+'</td>':'')+'</tr>';
 }
 const host=document.getElementById("fighters"),chips=document.getElementById("chips");
 host.innerHTML=F.map(f=>'<article class="fighter" id="'+f.id+'"><div class="fhead"><h2>'+esc(f.n)+'</h2>'+(f.hid?'<span class="unlock">Hidden · '+esc(f.hid)+'</span>':'')+'</div>'+(f.note?'<p class="fnote">'+esc(f.note)+'</p>':'')+
