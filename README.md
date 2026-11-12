@@ -46,7 +46,10 @@ the set itself are in [`fbneo/README.txt`](fbneo/README.txt).
 
 Highlights (full detail in [`doc/`](doc/) — start with
 [`doc/ENGINEERING_NOTES.md`](doc/ENGINEERING_NOTES.md), the project's running
-build and behaviour notes, and [`doc/CHANGELOG.md`](doc/CHANGELOG.md)):
+build and behaviour notes, and [`doc/CHANGELOG.md`](doc/CHANGELOG.md)). The `doc/`
+notes are the development record, so they mention inputs, unlocks and moves that
+changed or were cut before release. For what is actually in v4.0, go by
+[`MOVES.md`](MOVES.md).
 
 **Built from source.** Program, video and sound ROMs are all rebuilt from the
 1993 source with the original DOS toolchain under DOSBox; the source-built video

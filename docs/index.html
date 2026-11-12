@@ -166,7 +166,7 @@ const F=[
  ["Teleport","D U","",0],
  ["Spin","F F + LK","New input (arcade was Up, Up).",1],
  ["Dive Kick","(air) D + HK","Near the top of a jump.",0],
- ["Air Escape","(air) F F + LP","",1],
+ ["Air Escape","(air) F F + LP","Corner only: a back jump toward a wall close behind you (within about a third of a screen), or a straight-up jump near either wall. He dives at him and rolls along the floor, knocking down anyone he rolls into. Anywhere else the jump just carries on.",1],
  ["Backfist","B + HP","Standing.",1]],
  f:[["Hat Slice","F F F + LK","Sweep",0],["Hat Decapitation","Hold LP , B F , release LP","Far",0],["Babality","B B F F + HK","Any",0],["Stage Fatality","F F F + HP","Close",0]]},
 {id:"liukang",n:"Liu Kang",m:[
@@ -199,11 +199,11 @@ const F=[
  ["Fan Swipe","B + HP","Standing.",0]],
  f:[["Kiss of Death","Hold LK , F F D F , release LK","Close",0],["Fan Decapitation","BL BL BL + HK","Close · now two swings, out and back",0],["Babality","D D D + LK","Any",0],["Stage Fatality","F D F + HK","Close",0]]},
 {id:"mileena",n:"Mileena",m:[
- ["Sai Throw","Hold HP ~½ sec , release","Also in the air.",0],
+ ["Sai Throw","Hold HP ~½ sec , release","Also in the air. One every ~2 sec.",0],
  ["Teleport Kick","F F + LK","",0],
  ["Ground Roll","B B D + HK","",0]],
  f:[["Sai Stab","F B F + LP","Close · new ending: she cuts him in half",0],["Body Suck","Hold HK ~2 sec , release","Close",0],["Babality","D D D + HK","Any",0],["Stage Fatality","F D F + LK","Close",0]]},
-{id:"shang",n:"Shang Tsung",note:"A morphed Shang uses that fighter's moves and wears their default costume. He turns back on his own after a while, or at once with BL + Up + HK.",m:[
+{id:"shang",n:"Shang Tsung",note:"A morphed Shang uses that fighter's moves and wears their default costume. He turns back on his own after a while, or at once with BL + Up + HK. On an arcade board the Ermac, Jade and Rain morphs need that fighter unlocked first (all work from power-on in the FBNeo / Fightcade set).",m:[
  ["One Flaming Skull","B B + HP","",0],
  ["Two Flaming Skulls","B B F + HP","",0],
  ["Three Flaming Skulls","B B F F + HP","",0],
@@ -231,7 +231,7 @@ const F=[
  ["Torpedo","B B F","No button.",0],
  ["Electric Grab","Hold HP ~1½ sec , release","Close.",0],
  ["Short Lightning","B + HP","Standing.",1]],
- f:[["Electrocution","Hold LK ~2 sec , release","Close",0],["Exploding Uppercut","Hold HP ~7 sec , release","Close",0],["Lift","Hold HK ~3 sec , release","Close",1],["Babality","D D U + HK","Any",0],["Stage Fatality","U U + HP","Close",0]]},
+ f:[["Electrocution","Hold LK ~2 sec , release","Close",0],["Exploding Uppercut","Hold HP ~7 sec , release","Close",0],["Lift","Hold HK ~3 sec , release","Close · then hold Up and keep tapping HP until he explodes; stop and he just drops. Press HK out of kick range: a kick that lands ends FINISH HIM",1],["Babality","D D U + HK","Any",0],["Stage Fatality","U U + HP","Close",0]]},
 {id:"subzero",n:"Sub-Zero",m:[
  ["Ice Ball","D F + LP","Now also in the air.",0],
  ["Ground Freeze","D B + LK","Now also works in a corner.",0],
@@ -277,7 +277,7 @@ const F=[
  f:[["Telekinetic Slam","D U D D D + BL","Mid",1],["Telekinetic Head Rip","F B F F + LK","Far",1],["Babality","D B B + LK","Any",1],["Stage Fatality","D F F + BL","Close",0]]},
 {id:"rain",n:"Rain",hid:"Tap START on Sub-Zero",m:[
  ["Lightning Bolt","B B + HP","Strikes where he stood when you cast it, so he can step out. Short cooldown; refused 3+ hits into a string.",1],
- ["Storm Cloud","D F + HP","Steer with Up / Down. On a hit the cloud holds him and you move him with the stick.",1],
+ ["Storm Cloud","D F + HP","Steer with Up / Down. On a hit the cloud holds him and you move him with the stick. Refused 4+ hits into a string; no effect on bosses.",1],
  ["Super Roundhouse","B + HK","Knocks him across the screen. Looped, it becomes a normal roundhouse.",1]],
  f:[["Lightning","D D B F + HK","Mid",1],["Babality","D B B + HK","Any",1],["Stage Fatality","D F F + BL","Close",0]]}
 ];

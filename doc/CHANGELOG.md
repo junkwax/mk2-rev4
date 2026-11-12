@@ -1,5 +1,9 @@
 # Changelog
 
+> **Development history, not a player guide.** Entries record each change as it
+> was made, and many inputs, unlocks and moves here were changed or cut before the
+> v4.0 release. For what is in the released game, see [`MOVES.md`](../MOVES.md).
+
 Modifications to the leaked Mortal Kombat 2 source code, which builds
 as revision 3.0 (development codename "SUDDEN_RECLINE"). Our builds are
 numbered `X.Y-rN` starting with r0. The running game shows the

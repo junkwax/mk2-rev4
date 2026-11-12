@@ -82,7 +82,7 @@ Hold times are given in real seconds.
 | Teleport | `D, U` |
 | Spin | `F, F + LK`. **NEW input** (arcade: U, U) |
 | Dive Kick | (air) `D + HK` near the top of a jump |
-| Air Escape | **NEW** (air) `F, F + LP` |
+| Air Escape | **NEW** (air) `F, F + LP`. **Corner only:** jump back toward a wall that is close behind you (within about a third of a screen), or jump straight up near either wall. He dives at the other fighter and rolls along the floor, knocking down anyone he rolls into. Anywhere else nothing happens and the jump carries on |
 | Backfist | **NEW** `B + HP` (standing) |
 
 | Finisher | Input | Range |
@@ -170,7 +170,7 @@ anywhere.
 
 | Move | Input |
 |---|---|
-| Sai Throw | Hold HP about ½ second, release (air) |
+| Sai Throw | Hold HP about ½ second, release (air). One every 2 seconds or so |
 | Teleport Kick | `F, F + LK` |
 | Ground Roll | `B, B, D + HK` |
 
@@ -213,6 +213,8 @@ anywhere.
 
 A morphed Shang wears that fighter's default costume and can use that fighter's
 moves. He turns back on his own after a while, or straight away with `BL + U + HK`.
+On an arcade board the Ermac, Jade and Rain morphs only work once that fighter
+has been unlocked (all three work from power-on in the FBNeo / Fightcade set).
 
 | Finisher | Input | Range |
 |---|---|---|
@@ -237,11 +239,14 @@ moves. He turns back on his own after a while, or straight away with `BL + U + H
 Raiden's lightning, and the flash on whoever it hits, match his costume:
 blue (default), red (Start + HP) or purple (Start + LP / HK / LK).
 
+For the Lift, press HK out of kick range: the kick itself is a normal kick, and
+one that lands ends FINISH HIM. Walk in while you hold it.
+
 | Finisher | Input | Range |
 |---|---|---|
 | Fatality – Electrocution | Hold LK about 2 seconds, release | Close |
 | Fatality – Exploding Uppercut | Hold HP about 7 seconds, release | Close |
-| Fatality – Lift | **NEW** hold HK about 3 seconds, release | Close |
+| Fatality – Lift | **NEW** hold HK about 3 seconds, release. Then **hold Up and keep tapping HP** until he explodes. Stop and he just drops (a plain win) | Close |
 | Babality | `D, D, U + HK` | Any |
 | Stage Fatality | `U, U + HP` | Close |
 
@@ -358,7 +363,7 @@ blue (default), red (Start + HP) or purple (Start + LP / HK / LK).
 | Move | Input |
 |---|---|
 | Lightning Bolt | **NEW** `B, B + HP`. Strikes where he was standing when you cast it, so he can step out of it. Short cooldown; refused 3+ hits into a string |
-| Storm Cloud | **NEW** `D, F + HP`. Steer it with U / D. On a hit, the cloud holds him and **you move him with the stick**, then drops him |
+| Storm Cloud | **NEW** `D, F + HP`. Steer it with U / D. On a hit, the cloud holds him and **you move him with the stick**, then drops him. Refused 4+ hits into a string, and does not work on the bosses |
 | Super Roundhouse | **NEW** `B + HK`: knocks him clear across the screen. Spamming it in a loop gives the normal roundhouse instead |
 
 | Finisher | Input | Range |
